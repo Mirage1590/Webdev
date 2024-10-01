@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novels</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+    {% load static %}
+    <style>
+        body {
+            background-color: #fef7e1;
+        }
+    </style>
+</head>
+<body class="bg-custom2">
+
+    <!-- ส่วนหัว -->
+    <header class="bg-custom1 p-4 shadow-md">
+        <div class="container mx-auto flex fixed-top justify-between items-center">
+            <h1 class="px-4 py-2 text-2xl font-bold bg-custom2 rounded-lg shadow-lg">BOOKBOOK</h1>
+            <nav class="bg-custom1 p-4 flex justify-end">
+                <a href="{% url 'home-ld' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">หน้าแรก</a>
+                <a href="{% url 'add_book' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เพิ่มหนังสือ</a>
+                <a href="{% url 'book_list' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ดูสถิติ</a>
+                <a href="{% url 'profile' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ข้อมูลผู้ใช้</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Novel Section -->
+    <section class="container mx-auto py-16">
+        <h2 class="text-3xl font-bold text-center mb-8">นิยาย</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+            <!-- Book 1 -->
+            <a href="loveordead" class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="{% static 'รักหรือตายนายเลือกเอา.png' %}" alt="Novel 1" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">รักหรือตายบายเลือกเอา</p>
+            </a>
+            <!-- Book 2 (empty for now) -->
+            <a href="ชีวิตนี้ข้าพอแล้ว" class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="{% static 'ชีวิตนี้ข้าพอแล้ว.png' %}" alt="No Image" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">ชีวิตนี้ข้าพอแล้ว</p>
+            </a>
+            <!-- Book 3 -->
+            <a href="ตำนานดาบและคทาแห่งวิสตอเรีย 6" class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="{% static 'ตำนานดาบและคทาแห่งวิสตอเรีย 6.png' %}" alt="No Image" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">ตำนานดาบและคทาแห่งวิสตอเรีย 6</p>
+            </a>
+            <!-- Book 4 -->
+            <div class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="#" alt="No Image" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">ยังไม่มีข้อมูล</p>
+            </div>
+            <!-- Book 5 -->
+            <div class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="#" alt="No Image" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">ยังไม่มีข้อมูล</p>
+            </div>
+            <!-- Book 6 -->
+            <div class="bg-custom1 rounded-lg p-4 flex flex-col items-center">
+                <img src="#" alt="No Image" class="h-48 w-36 object-cover rounded-md mb-4">
+                <p class="font-bold text-center">ยังไม่มีข้อมูล</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

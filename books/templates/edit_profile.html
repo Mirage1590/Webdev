@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-custom1">
+    <div class="container mx-auto py-16">
+        <div class="bg-custom2 p-8 rounded-lg shadow-lg max-w-lg mx-auto">
+            <h2 class="text-xl font-bold mb-6 text-center">แก้ไขข้อมูลส่วนตัว</h2>
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+
+                <!-- First Name and Last Name Fields -->
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" name="first_name" placeholder="ชื่อ"
+                           class="w-full p-3 border rounded-md" value="{{ form.first_name.value|default_if_none:'' }}" required>
+                    <input type="text" name="last_name" placeholder="สกุล"
+                           class="w-full p-3 border rounded-md" value="{{ form.last_name.value|default_if_none:'' }}" required>
+                </div>
+
+                <!-- Username Field -->
+                <div>
+                    <input type="text" name="username" placeholder="ชื่อผู้ใช้"
+                           class="w-full p-3 border rounded-md" value="{{ form.username.value|default_if_none:'' }}" required>
+                </div>
+
+                <!-- Password Fields -->
+                <div>
+                    <input type="password" name="password" placeholder="รหัสผ่าน"
+                           class="w-full p-3 border rounded-md" required>
+                </div>
+                <div>
+                    <input type="password" name="password_confirm" placeholder="ยืนยันรหัสผ่าน"
+                           class="w-full p-3 border rounded-md" required>
+                </div>
+
+                <!-- Submit and Cancel Buttons -->
+                <div class="flex justify-center mt-6">
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition duration-300">
+                        บันทึก
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List with Chart</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ส่วนหัว -->
+    <header class="bg-custom1 p-4 shadow-md">
+        <div class="container mx-auto flex fixed-top justify-between items-center">
+            <h1 class="px-4 py-2 text-2xl font-bold bg-custom2 rounded-lg shadow-lg">BOOKBOOK</h1>
+            <nav class="bg-custom1 p-4 flex justify-end">
+                <a href="{% url 'home-ld' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">หน้าแรก</a>
+                <a href="{% url 'add_book' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เพิ่มหนังสือ</a>
+                <a href="{% url 'book_list' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ดูสถิติ</a>
+                <a href="{% url 'profile' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ข้อมูลผู้ใช้</a>
+            </nav>
+        </div>
+    </header>
+
+</head>
+<body class="bg-custom2">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl text-center font-bold mb-4">Book List</h1>
+        <a href="{% url 'add_book' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Add New Book</a>
+
+        <!-- ตารางแสดงรายการหนังสือ -->
+        <table class="table-auto w-full mt-4 bg-white shadow-lg rounded">
+            <thead>
+                <tr class="bg-gray-300">
+                    <th class="px-4 py-2 text-left">Image</th>
+                    <th class="px-4 py-2 text-left">Title</th>
+                    <th class="px-4 py-2 text-left">Author</th>
+                    <th class="px-4 py-2 text-left">Category</th>
+                    <th class="px-4 py-2 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr class="border-t">
+                    <td class="px-4 py-2">
+                        <!-- ตรวจสอบว่ามีไฟล์ cover_image หรือไม่ -->
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="w-16 h-16 object-cover">
+                        {% else %}
+                            <p>No Image</p>  <!-- ถ้าไม่มีไฟล์แสดงข้อความนี้ -->
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-2">{{ book.title }}</td>
+                    <td class="px-4 py-2">{{ book.author }}</td>
+                    <td class="px-4 py-2">{{ book.category.name }}</td>
+                    <td class="px-4 py-2">
+                        <a href="{% url 'edit_book' book.pk %}" class="text-blue-600 hover:underline">Edit</a> |
+                        <button onclick="openDeleteModal('{{ book.pk }}', '{{ book.title }}')" class="text-red-600 hover:underline">Delete</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4">No books available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Modal สำหรับการยืนยันการลบ -->
+        <div id="deleteModal" class="fixed inset-0 hidden bg-gray-900 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4">Confirm Delete</h2>
+                <p>Are you sure you want to delete the book <strong id="bookTitle"></strong>?</p>
+                <form id="deleteForm" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="book_id" id="bookId">
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Confirm Delete</button>
+                    <button type="button" onclick="closeDeleteModal()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- กราฟแสดงจำนวนหนังสือตามหมวดหมู่ -->
+        <h2 class="text-2xl font-bold mt-8">Book Categories Chart</h2>
+        <canvas id="bookCategoryChart" width="400" height="200"></canvas>
+
+        <!-- สคริปต์ของ Chart.js -->
+        <script>
+            var ctx = document.getElementById('bookCategoryChart').getContext('2d');
+            var bookCategoryChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ categories|safe }},  // รายชื่อหมวดหมู่
+                    datasets: [{
+                        label: 'Number of Books',
+                        data: {{ category_counts|safe }},  // จำนวนหนังสือตามหมวดหมู่
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // ฟังก์ชันสำหรับเปิด modal และส่งข้อมูลหนังสือ
+            function openDeleteModal(bookId, bookTitle) {
+                document.getElementById('bookTitle').textContent = bookTitle;
+                document.getElementById('bookId').value = bookId;
+                // กำหนด action ให้ฟอร์มลบ โดยใช้ bookId
+                document.getElementById('deleteForm').action = `/delete/${bookId}/`;
+                document.getElementById('deleteModal').classList.remove('hidden');
+            }
+            // ฟังก์ชันสำหรับปิด modal
+            function closeDeleteModal() {
+                document.getElementById('deleteModal').classList.add('hidden');
+            }
+        </script>
+    </div>
+</body>
+</html>

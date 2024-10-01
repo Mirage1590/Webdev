@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-custom1">
+    <!-- ส่วนหัว -->
+    <header class="bg-custom1 p-4 shadow-md">
+        <div class="container mx-auto flex fixed-top justify-between items-center">
+            <h1 class="px-4 py-2 text-2xl font-bold bg-custom2 rounded-lg shadow-lg">BOOKBOOK</h1>
+            <nav class="bg-custom1 p-4 flex justify-end">
+                <a href="{% url 'home-ld' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">หน้าแรก</a>
+                <a href="{% url 'add_book' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เพิ่มหนังสือ</a>
+                <a href="{% url 'book_list' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ดูสถิติ</a>
+                <button onclick="openLogoutModal()" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ออกจากระบบ</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- หน้าข้อมูลผู้ใช้ -->
+    <div class="container mx-auto py-16">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto">
+            <h2 class="text-2xl font-bold mb-6">ข้อมูลผู้ใช้</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold">ชื่อ:</label>
+                <p>{{ user.username }}</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold">อีเมล:</label>
+                <p>{{ user.email }}</p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold">วันที่ลงทะเบียน:</label>
+                <p>{{ user.date_joined }}</p>
+            </div>
+            <a href="{% url 'edit_profile' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">แก้ไขข้อมูลส่วนตัว</a>
+
+            <h3 class="text-2xl font-bold mt-6">รายการหนังสือที่เพิ่ม</h3>
+            <table class="table-auto w-full mt-4 bg-white shadow-lg rounded">
+                <thead>
+                    <tr class="bg-gray-300">
+                        <th class="px-4 py-2">ชื่อหนังสือ</th>
+                        <th class="px-4 py-2">วันที่เพิ่ม</th>
+                        <th class="px-4 py-2">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if user_books %}
+                    {% for book in user_books %}
+                    <tr class="border-t">
+                        <td class="px-4 py-2">{{ book.title }}</td>
+                        <td class="px-4 py-2">{{ book.date_added }}</td>
+                        <td class="px-4 py-2">เพิ่มแล้ว</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center py-4">ยังไม่มีการเพิ่มหนังสือ</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- ป๊อปอัปยืนยันการออกจากระบบ -->
+<div id="logoutModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
+        <h2 class="text-2xl font-bold mb-4">ยืนยันการออกจากระบบ</h2>
+        <p>คุณแน่ใจหรือว่าต้องการออกจากระบบ?</p>
+        <div class="flex justify-end mt-4 space-x-4">
+            <button onclick="closeLogoutModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700">ยกเลิก</button>
+            <button onclick="confirmLogout()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-700">ออกจากระบบ</button>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript สำหรับควบคุมป๊อปอัป -->
+<script>
+    // ฟังก์ชันสำหรับเปิดป๊อปอัป
+    function openLogoutModal() {
+        document.getElementById('logoutModal').classList.remove('hidden');
+    }
+
+    // ฟังก์ชันสำหรับปิดป๊อปอัป
+    function closeLogoutModal() {
+        document.getElementById('logoutModal').classList.add('hidden');
+    }
+
+    // ฟังก์ชันสำหรับยืนยันการออกจากระบบ
+    function confirmLogout() {
+        // ทำการออกจากระบบด้วยการส่งไปที่ URL 'logout' และไปที่หน้า 'home'
+        window.location.href = "{% url 'logout' %}";
+    }
+</script>
+</body>
+</html>

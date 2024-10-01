@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOKBOOK - Box Example</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-custom1">
+
+    <!-- ส่วนหัว -->
+    <header class="bg-custom1 p-4 shadow-md">
+        <div class="container mx-auto flex fixed-top justify-between items-center">
+            <h1 class="px-4 py-2 text-2xl font-bold bg-custom2 rounded-lg shadow-lg">BOOKBOOK</h1>
+            <nav class="bg-custom1 p-4 flex justify-end">
+                <a href="{% url 'home' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">หน้าแรก</a>
+                <a href="{% url 'login' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เพิ่มหนังสือ</a>
+                <a href="{% url 'login' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ดูสถิติ</a>
+                <a href="{% url 'login' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เข้าสู่ระบบ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ส่วนที่ 1: หน้าต้อนรับ -->
+    <section class="relative h-auto flex flex-col justify-center items-center bg-white">
+        <div>
+            <h2 class="text-center justify-center text-4xl font-bold mb-24 mt-20">Welcome to BOOKBOOK!</h2>
+        </div>
+        <div class="w-full h-full">
+            <img src="https://cdn.marketingoops.com/wp-content/uploads/2014/12/education-booksOK.jpg" class="w-full h-96 object-cover">
+        </div>
+    </section>
+
+    <!-- ส่วนที่ 2: กล่องสี่เหลี่ยมหมวดหมู่หนังสือ -->
+    <section class="container mx-auto py-16">
+    <div class="grid grid-cols-3 gap-8">
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">นิยาย</h3>
+        </a>
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">การ์ตูน</h3>
+        </a>
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">คู่มือสอบ</h3>
+        </a>
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">โทษบาการ</h3>
+        </a>
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">บริหารจัดการ</h3>
+        </a>
+        <a href="login" class="bg-custom2 h-48 flex items-center justify-center rounded-lg shadow-md cursor-pointer">
+            <h3 class="text-xl font-semibold">การลงทุน</h3>
+        </a>
+    </div>
+</section>
+
+
+</body>
+</html>

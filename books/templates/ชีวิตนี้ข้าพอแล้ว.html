@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+    {% load static %}
+    <style>
+        body {
+            background-color: #fef7e1;
+        }
+    </style>
+</head>
+<body class="bg-custom2">
+
+    <!-- ส่วนหัว -->
+    <header class="bg-custom1 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="px-4 py-2 text-2xl font-bold bg-custom2 rounded-lg shadow-lg">BOOKBOOK</h1>
+            <nav class="bg-custom1 p-4 flex justify-end">
+                <a href="{% url 'home-ld' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">หน้าแรก</a>
+                <a href="{% url 'add_book' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">เพิ่มหนังสือ</a>
+                <a href="{% url 'book_list' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ดูสถิติ</a>
+                <a href="{% url 'profile' %}" class="px-3 py-2 bg-custom2 rounded-lg shadow-lg mx-1">ข้อมูลผู้ใช้</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section สำหรับแสดงรายละเอียดหนังสือ -->
+    <section class="container mx-auto py-16 flex justify-center items-start">
+        <!-- รูปหนังสือ -->
+        <div class="w-1/3 flex flex-col items-center">
+            <img src="{% static 'ชีวิตนี้ข้าพอแล้ว.png' %}" alt="Novel Image" class="w-64 h-auto rounded-lg shadow-lg mb-4">
+            <h2 class="text-2xl font-bold text-center">ชีวิตนี้ข้าพอแล้ว</h2>
+            <p class="text-center">ชื่อผู้แต่ง: ซ่งอู๋ซวง</p>
+        </div>
+
+        <!-- ข้อมูลรายละเอียด -->
+        <div class="w-2/3 px-8">
+            <h3 class="text-xl font-bold mb-4">รายละเอียดหนังสือ</h3>
+            <p class="mb-4">
+                ชีวิตก่อนนางร้ายกาจเพราะต้องการแย่งชิงความรักของบิดาจากพี่สาว ทว่าท้ายที่สุดสิ่งที่นางทำกลับช่างไร้ค่าสิ้นดี จวบจนลมหายใจสุดท้าย บิดาก็ไม่เคยเหลียวแลนาง เมื่อได้รับโอกาสอีกครั้ง ชีวิตนี้นางพอแล้ว…
+            </p>
+            <p class="mb-4">
+                วันที่เผยแพร่: ข้อมูลการเผยแพร่ล่าสุดอยู่ในปี 2024<br>
+                ปีที่พิมพ์: ข้อมูลการพิมพ์เบื้องต้นประมาณปี 2024<br>
+                จำนวนหน้า: 408 หน้า<br>
+                หมวดหมู่: นิยาย<br>
+                สำนักพิมพ์: MEB Corporation Public Company Limited
+
+            </p>
+        </div>
+    </section>
+
+</body>
+</html>

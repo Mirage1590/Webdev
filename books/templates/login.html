@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BOOKBOOK</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-custom1 flex justify-center items-center h-screen">
+
+    <div class="bg-custom2 p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-center text-2xl font-bold mb-6">เข้าสู่ระบบ</h2>
+
+        <!-- ฟอร์ม Login -->
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700">ชื่อผู้ใช้</label>
+                <input type="text" name="username" id="username" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700">รหัสผ่าน</label>
+                <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none" required>
+            </div>
+        <!-- ปุ่มเข้าสู่ระบบและปุ่มลงทะเบียน -->
+            <div class="flex justify-between items-center">
+                <a href="{% url 'password_reset' %}" class="text-sm text-gray-600 underline">ลืมรหัสผ่าน?</a> <!-- ลิงก์ลืมรหัสผ่าน -->
+                <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-md">เข้าสู่ระบบ</button>
+                <a href="{% url 'register' %}" class="bg-gray-800 text-white px-4 py-2 rounded-md">ลงทะเบียน</a>
+            </div>
+
+
+            {% if messages %}
+            <div class="mt-4">
+                {% for message in messages %}
+                <p class="text-red-500">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </form>
+    </div>
+
+</body>
+</html>

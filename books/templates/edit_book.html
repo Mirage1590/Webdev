@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBeige: {
+                            light: '#f5f5dc',
+                            DEFAULT: '#d2b48c',
+                            dark: '#a58b6f',
+                        },
+                        custom1: '#ECDFCC',
+                        custom2: '#FFF0D1',
+                    }
+                }
+            }
+        }
+    </script>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-custom2">
+    <div class="container mx-auto py-16">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto">
+            <h2 class="text-2xl font-bold mb-6">แก้ไขหนังสือ</h2>
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+
+                <!-- Display form errors -->
+                {% if form.non_field_errors %}
+                    <div class="text-red-600">
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Book Title -->
+                <div>
+                    <input type="text" name="title" id="title" placeholder="ชื่อหนังสือ"
+                           class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           value="{{ form.title.value|default_if_none:'' }}" required>
+                    <!-- Display error for title field -->
+                    {% if form.title.errors %}
+                        <p class="text-red-600">{{ form.title.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Author -->
+                <div>
+                    <input type="text" name="author" id="author" placeholder="ผู้แต่ง"
+                           class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           value="{{ form.author.value|default_if_none:'' }}" required>
+                    <!-- Display error for author field -->
+                    {% if form.author.errors %}
+                        <p class="text-red-600">{{ form.author.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <select name="category" id="category" class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                        <option value="">เลือกหมวดหมู่</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if form.category.value == category.id %} selected {% endif %}>
+                                {{ category.name|default_if_none:'' }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <!-- Display error for category field -->
+                    {% if form.category.errors %}
+                        <p class="text-red-600">{{ form.category.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Published Year -->
+                <div>
+                    <input type="text" name="published_year" id="published_year" placeholder="ปีที่พิมพ์"
+                           class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           value="{{ form.published_year.value|default_if_none:'' }}" required>
+                    <!-- Display error for published_year field -->
+                    {% if form.published_year.errors %}
+                        <p class="text-red-600">{{ form.published_year.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Number of Pages -->
+                <div>
+                    <input type="text" name="num_pages" id="num_pages" placeholder="จำนวนหน้า"
+                           class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           value="{{ form.num_pages.value|default_if_none:'' }}">
+                    <!-- Display error for num_pages field -->
+                    {% if form.num_pages.errors %}
+                        <p class="text-red-600">{{ form.num_pages.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Cover Image Upload -->
+                <div>
+                    <input type="file" name="cover_image" id="cover_image" class="w-full border-gray-300 p-3 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4">
+                    <!-- Submit Button -->
+                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-700 transition duration-300">
+                        บันทึก
+                    </button>
+
+                    <!-- Cancel Button -->
+                    <a href="{% url 'book_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-700 transition duration-300">
+                        ยกเลิก
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
